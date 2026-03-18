@@ -1,16 +1,23 @@
-#!bin/bash/
+#!bin/bash
 
 echo "Actualizando paquetes...."
-sudo apt update
+apt update
 
 echo "Instalando OpenSSH Server..."
-sudo apt install -y openssh-server
+apt install -y openssh-server
 
 echo "Habilitando servicio SSH..."
-sudo systemctl enable ssh
+systemctl enable ssh
 
-echo "Ininiciando servicio SSH..."
-sudo systemctl start ssh
+echo "Iniciando servicio SSH..."
+systemctl start ssh
 
-echo "Estado del servicio SSH:"
-sudo systemctl status ssh
+echo "Verificando estado del servicio SSH..."
+estado=$(systemctl is-active ssh)
+
+if [ "$estado" = "active" ]; then
+   echo "SSH activo correctamente."
+else
+   echo "Error: SSH no esta activo."
+   exit 1
+fi
