@@ -12,7 +12,8 @@ echo "Habilitando servicio SSH..."
 systemctl enable ssh > /dev/null 2>&1
 
 echo "Iniciando servicio SSH..."
-systemctl start ssh > /dev/null/ 2>&1
+systemctl start ssh > /dev/null
+ 2>&1
 
 echo "Verificando estado del servicio SSH..."
 estado=$(systemctl is-active ssh)
