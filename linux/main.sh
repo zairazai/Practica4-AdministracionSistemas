@@ -1,6 +1,9 @@
 #!/bin/bash
 
+source ./funciones/comunes.sh
 source ./funciones/ssh.sh
+
+verificar_root
 
 echo "=== MENU DE ADMINISTRACION LINUX ==="
 echo "1) Configurar SSH"
