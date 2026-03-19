@@ -1,4 +1,5 @@
-#!bin/bash
+#!/bin/bash
+function configurar_ssh() {
 
 echo "Actualizando paquetes...."
 apt update
@@ -21,3 +22,5 @@ else
    echo "Error: SSH no esta activo."
    exit 1
 fi
+
+}
