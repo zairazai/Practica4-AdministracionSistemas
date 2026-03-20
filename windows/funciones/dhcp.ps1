@@ -1,76 +1,3 @@
-#funcion para mostrar mensajes
-function Mostrar-Mensaje {
-  param (
-      [string]$Tipo,
-      [string]$Mensaje
-  )
-
-  switch ($Tipo) {
-     "INFO" { Write-Host "[INFO] $Mensaje"}
-     "OK" { Write-Host "[OK] $Mensaje"}
-     "ERROR" { Write-Host "[ERROR] $Mensaje"}
-     "WARN" { Write-Host "[WARN] $Mensaje"}
-     default {Write-Host $Mensaje }
-   }
-}
-
-#funcion para validar permisos de admin
-function Verificar-Administrador {
-  if (-not ([Security.Principal.WindowsPrincipal] `
-      [Security.Principal.WindowsIdentity]::GetCurrent()
-      ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-     Mostrar-Mensaje "ERROR" "Este script debe ejecutarse como administrador."
-     exit 1
-  }
-
-}
-
-#funcion para validar formato Ipv4
-  function Validar-IPv4 {
-  param (
-    [string]$IP
-  )
-
-#expresion regular para formato ipv4
-  $regex = '^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$'
-  if ($IP -notmatch $regex) {
-     return $false
-  }
-  return $true
-}
-
-#funcion para pedir una IPv4 
-function Pedir-IPv4 {
-  param (
-       [string]$Mensaje
-  )
-  while ($true) {
-    $valor = Read-Host $Mensaje
-    if (Validar-IPv4 $valor) {
-       return $valor
-    }
-    else {
-        Mostrar-Mensaje "ERROR" "IPv4 invalida.Intenta de nuevo."
-    }
-  }
-}
-
-#funcion para pedir un entero positivo
-function Pedir-EnteroPositivo {
-  param (
-     [string]$Mensaje
-  )
-  while ($true) {
-     $valor = Read-Host $Mensaje
-
-      if ($valor -match '^[0-9]+$' -and [int]$valor -gt 0) {
-         return [int]$valor
-      }
-      else {
-           Mostrar-Mensaje "ERROR" "Debes ingresar un numero entero positivo."
-     }
-  }
-}
 
 #funcion para verificar instalacion del rol DHCP 
 function Verificar-InstalacionDHCP {
@@ -207,7 +134,7 @@ function Mostrar-ScopeDHCP {
 function Mostrar-OpcionesDHCP {
   Write-Host ""
   Mostrar-Mensaje "INFO" "Opciones configuradas del Scope: "
-  Get-DhcpServerv4OptionValue -ScopeId $ScopeId | Format Table -AutoSize
+  Get-DhcpServerv4OptionValue -ScopeId $ScopeId | Format-Table -AutoSize
 }
 
 #funcion para mostrar leases activas
@@ -217,9 +144,7 @@ function Mostrar-LeasesDHCP {
   Get-DhcpServerv4Lease -ScopeId $ScopeId | Format-Table -Autosize
 }
 
-# ===============================
-# EJECUCION PRINCIPAL
-# ==============================
+function Configurar-DHCP {
 Clear-Host 
 Write-Host "============================================"
 Write-Host "AUTOMATIZACION DE SERVIDOR DHCP EN WINDOWS"
@@ -239,3 +164,4 @@ Mostrar-LeasesDHCP
 
 Write-Host ""
 Mostrar-Mensaje "OK" "Proceso completado correctamente."
+}

@@ -62,6 +62,23 @@ function Verificar-Administrador {
   }
 }
 
+#funcion para pedir un entero positivo
+function Pedir-EnteroPositivo {
+  param (
+     [string]$Mensaje
+  )
+  while ($true) {
+     $valor = Read-Host $Mensaje
+
+      if ($valor -match '^[0-9]+$' -and [int]$valor -gt 0) {
+         return [int]$valor
+      }
+      else {
+           Mostrar-Mensaje "ERROR" "Debes ingresar un numero entero positivo."
+     }
+  }
+}
+
 function Iniciar-ServicioSeguro {
 
   param (
